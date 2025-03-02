@@ -51,6 +51,7 @@ export function LoginForm() {
         router.push("/student/dashboard")
       }
     } catch (error) {
+      console.error("Login Error:", error) // Log the error
       setError("Something went wrong. Please try again.")
     } finally {
       setIsEmailLoading(false)
@@ -62,6 +63,7 @@ export function LoginForm() {
     try {
       await signIn("google")
     } catch (error) {
+      console.error("Google Sign-In Error:", error) // Log the error
       setError("Google sign-in failed. Please try again.")
     } finally {
       setIsGoogleLoading(false)
@@ -122,7 +124,7 @@ export function LoginForm() {
 
         <div className="mt-4 text-center">
           <span className="text-sm text-gray-500">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href="/sign-up" className="text-blue-600 hover:underline">Sign up</Link>
           </span>
         </div>

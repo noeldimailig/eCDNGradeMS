@@ -14,7 +14,7 @@ export function AuthSuccess() {
       
       <div className="mt-4 text-center">
         <span className="text-sm text-gray-500">
-            Didn't recieve an email? To go back to the sign-up page and try agin, 
+            Didn&apos;t recieve an email? To go back to the sign-up page and try agin, 
           <Link href="/sign-up" className="text-blue-600 hover:underline">
              Click here
           </Link>

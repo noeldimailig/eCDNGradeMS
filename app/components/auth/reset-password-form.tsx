@@ -35,7 +35,7 @@ export function ResetPasswordForm() {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       router.push("/auth/login")
     } catch (error) {
-      setError("An error occurred. Please try again.")
+      setError(`An error occurred. Please try again. ${error}`)
     } finally {
       setIsLoading(false)
     }

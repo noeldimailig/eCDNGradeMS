@@ -3,7 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,7 +13,7 @@ export function ForgotPasswordForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
-  const router = useRouter()
+  // const router = useRouter()
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
@@ -22,15 +21,15 @@ export function ForgotPasswordForm() {
     setError("")
     setSuccess(false)
 
-    const form = event.target as HTMLFormElement
-    const email = form.email.value
+    // const form = event.target as HTMLFormElement
+    // const email = form.email.value
 
     try {
       // Here you would typically call your forgot password API
       await new Promise((resolve) => setTimeout(resolve, 1000))
       setSuccess(true)
     } catch (error) {
-      setError("An error occurred. Please try again.")
+      setError(`An error occurred. Please try again. ${error}`)
     } finally {
       setIsLoading(false)
     }

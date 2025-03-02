@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { student } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export const updateStudentId = async (studentId: string) => {
+export const updateStudentId = async (studentId: string): Promise<boolean> => {
   const session = await auth();
 
   if (!session) {
