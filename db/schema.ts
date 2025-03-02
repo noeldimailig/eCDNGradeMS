@@ -30,6 +30,7 @@ export const users = pgTable("user", {
   name: text("name"),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
+  password: text("password"),
   role: userRoleEnum("role").default("Student"),
   image: text("image"),
 });
@@ -121,6 +122,16 @@ export const course = pgTable("course", {
   labHours: integer("lab_hours").notNull(),
   prerequisites: uuid("prerequisites").array().default([]),
   programId: uuid("program_id").notNull().references(() => program.programId, { onDelete: "cascade" }),
+  yearLevel: integer("year_level").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const courseSemester = pgTable("course_semester", {
+  courseSemesterId: uuid("course_semester_id").defaultRandom().primaryKey(),
+  courseId: uuid("course_id").notNull().references(() => course.courseId),
+  academicYearId: uuid("academic_year_id").notNull().references(() => academicYear.id, { onDelete: "cascade" }),
+  semesterId: uuid("semester_id").notNull().references(() => semester.semesterId, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -248,6 +259,23 @@ export const studentGrades = pgTable("student_grades", {
   numericalEquivalent: numeric("numerical_equivalent", { precision: 5, scale: 2 }),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const temporaryGrades = pgTable("temporary_grades", {
+  id: uuid("id").primaryKey().default("uuid_generate_v4()"),
+  student_id: uuid("student_id"),
+  studentName: text("student_name"),
+  academicYearId: text("academic_year_id"),
+  courseSemesterId: text("course_semester_id"),
+  semesterId: text("semester_id"),
+  midtermGrade: numeric("midterm_grade", { precision: 5, scale: 2 }),
+  tentativeFinalGrade: numeric("tentative_final_grade", { precision: 5, scale: 2 }),
+  finalGrade: numeric("final_grade", { precision: 5, scale: 2 }),
+  courseId: uuid("course_id"),
+  sectionId: uuid("section_id"),
+  remarks: text("remarks"),
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow(),
 });
 
 

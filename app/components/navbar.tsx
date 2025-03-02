@@ -1,4 +1,4 @@
-import { Search, MessageCircle, Bell, User } from "lucide-react";
+import { Search, Bell, User } from "lucide-react";
 import { getUserRole } from "@/lib/auth/getUserRoleServerAction";
 import { getUserName } from "@/lib/auth/getUsernameServerAction";
 

@@ -56,8 +56,8 @@ const StudentDashboard = () => {
         setModalOpen(false); // Close the modal after successful update
         router.refresh();
       }
-    } catch (error) {
-      toast("Error", { description: "Failed to update Student ID." });
+    } catch (error: any) {
+      toast("Error", { description: error });
     }
   };
 

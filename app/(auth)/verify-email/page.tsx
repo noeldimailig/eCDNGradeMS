@@ -1,4 +1,4 @@
-import { VerifyForm } from "@/app/components/auth/verify-form"
+import VerifyForm from "@/app/components/auth/verify-form"
 import { AuthLayout } from "@/app/components/auth/auth-layout"
 
 export default function VerifyPage() {

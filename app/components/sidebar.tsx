@@ -1,7 +1,12 @@
 import Link from "next/link";
 
+interface SidebarLink {
+  href: string;
+  label: string;
+}
+
 export default function Sidebar({ role }: { role: string }) {
-  let links: any[] = [];
+  let links: SidebarLink[] = [];
 
   if (role === "student") {
     links = [

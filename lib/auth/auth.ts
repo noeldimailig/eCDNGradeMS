@@ -7,8 +7,7 @@ import Credentials from "next-auth/providers/credentials"
 import {eq, sql} from "drizzle-orm";
 import bcrypt from "bcryptjs"
 
-import { db, accounts, sessions, users, student, verificationTokens } from "@/db/schema"
-import { uuid } from "drizzle-orm/pg-core";
+import { db, accounts, sessions, users, student, verificationTokens, temporaryGrades } from "@/db/schema"
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
   adapter: DrizzleAdapter(db,
@@ -78,7 +77,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
     maxAge: 30 * 24 * 60 * 60, // 30 days in seconds (this value is also the default)
   },
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === "google" || account?.provider === "credentials") {
         const [existingUser] = await db
           .select()
@@ -139,16 +138,38 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      //console.log("session callback", { session, token });
+      if (token.id) {
+        try {
+          const [studentRecord] = await db
+            .select({ studentId: student.studentId }) // Select the student.id from student table
+            .from(student)
+            .where(eq(student.userId, token.id as string))
+            .execute();
+
+          if (studentRecord && studentRecord.studentId) {
+            return {
+              ...session,
+              user: {
+                ...session.user,
+                id: token.id as string,
+                studentId: studentRecord.studentId, // Add studentId to the session
+              },
+            };
+          }
+        } catch (error) {
+          console.error("Error fetching student ID:", error);
+        }
+      }
+
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id as string,
         },
-      };
+      }
     },
   },
   secret: process.env.AUTH_SECRET,
-}
+  }
 )

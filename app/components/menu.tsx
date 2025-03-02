@@ -1,17 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Home, Users, User, Book, FileText, Settings, LogOutIcon } from "lucide-react";
 import { handleSignOut } from "@/lib/auth/sign-out";
 
-const role = "student";
+const role = "student"; // Example role
 
 const menuItems = [
   {
     title: "MENU",
     items: [
-      { icon: <Home size={20} />, label: "Dashboard", href: "/", visible: ["admin", "teacher", "student"] },
+      { 
+        icon: <Home size={20} />, 
+        label: "Dashboard", 
+        href: role === "student" ? "/dashboard/student/dashboard" : "/dashboard", 
+        visible: ["admin", "teacher", "student"] 
+      },
       { icon: <Users size={20} />, label: "Teachers", href: "/personal-information", visible: ["admin", "teacher"] },
       { icon: <User size={20} />, label: "Students", href: "/list/students", visible: ["admin", "teacher"] },
       { icon: <Book size={20} />, label: "Subjects", href: "/list/subjects", visible: ["admin"] },
@@ -24,14 +29,14 @@ const menuItems = [
 ];
 
 const Menu = () => {
-  const router = useRouter();
+  const pathname = usePathname(); // Get current route
+  console.log("Current pathname:", pathname); // Debugging
 
   const handleLogout = async (event: React.MouseEvent) => {
-    event.preventDefault(); // Prevent the default link behavior
-
+    event.preventDefault();
     try {
       await handleSignOut();
-      router.replace("/"); // Redirect to home or login page after logout
+      window.location.href = "/";
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -43,11 +48,15 @@ const Menu = () => {
         <div className="flex flex-col gap-2" key={i.title}>
           {i.items.map((item) => {
             if (item.visible.includes(role)) {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+
               return item.action === "logout" ? (
                 <button
                   key={item.label}
                   onClick={handleLogout}
-                  className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-blue-100 hover:text-blue-500 w-full text-left"
+                  className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md w-full text-left ${
+                    isActive ? "bg-blue-100 text-blue-500 font-semibold" : "text-gray-500 hover:bg-blue-100 hover:text-blue-500"
+                  }`}
                 >
                   {item.icon}
                   <span className="hidden lg:block">{item.label}</span>
@@ -56,7 +65,9 @@ const Menu = () => {
                 <Link
                   href={item.href}
                   key={item.label}
-                  className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-blue-100 hover:text-blue-500"
+                  className={`flex items-center justify-center lg:justify-start gap-4 py-2 md:px-2 rounded-md ${
+                    isActive ? "bg-blue-100 text-blue-500 font-semibold" : "text-gray-500 hover:bg-blue-100 hover:text-blue-500"
+                  }`}
                 >
                   {item.icon}
                   <span className="hidden lg:block">{item.label}</span>
