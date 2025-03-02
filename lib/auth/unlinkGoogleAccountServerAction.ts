@@ -9,7 +9,7 @@ export const unlinkGoogleAccount = async () => {
     throw new Error("Unauthorized")
   }
 
-  const uuid = session.user?.id
+  const uuid = session.user?.id as string
 
   try {
     await db.delete(accounts).where(and(eq(accounts.provider, "google"), eq(accounts.userId, uuid)))
