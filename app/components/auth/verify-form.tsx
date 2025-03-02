@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/app/components/ui/icons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { verifyEmail } from "@/lib/auth/verify-email";
 
-export default function VerifyForm() {
+function VerifyFormContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
@@ -64,5 +64,13 @@ export default function VerifyForm() {
         </>
       )}
     </div>
+  );
+}
+
+export default function VerifyForm() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyFormContent />
+    </Suspense>
   );
 }
