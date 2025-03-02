@@ -7,7 +7,7 @@ import Credentials from "next-auth/providers/credentials"
 import {eq, sql} from "drizzle-orm";
 import bcrypt from "bcryptjs"
 
-import { db, accounts, sessions, users, student, verificationTokens, temporaryGrades } from "@/db/schema"
+import { db, accounts, sessions, users, student, verificationTokens } from "@/db/schema"
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
   adapter: DrizzleAdapter(db,

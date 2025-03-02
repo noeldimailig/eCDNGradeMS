@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 
 interface Grade {
     id: string;
